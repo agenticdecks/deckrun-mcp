@@ -6,6 +6,10 @@ narrated videos, and audio from Markdown. Built for AI agents and IDEs.
 **Free tier:** no API key required — generate PDFs instantly.
 **Paid tier:** set `DECKRUN_API_KEY` to unlock video, audio, and account tools.
 
+<a href="https://glama.ai/mcp/servers/agenticdecks/deckrun-mcp">
+  <img width="380" height="200" src="https://glama.ai/mcp/servers/agenticdecks/deckrun-mcp/badge" alt="deckrun-mcp MCP server" />
+</a>
+
 ---
 
 ## Quickstart — no install needed
