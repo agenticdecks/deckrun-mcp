@@ -1,0 +1,55 @@
+{
+  "serverInfo": {
+    "name": "Deckrun",
+    "version": "2.0.0",
+    "description": "Generate presentation PDFs, narrated videos, and audio from Markdown. Free tier requires no API key.",
+    "homepage": "https://agenticdecks.com",
+    "repository": "https://github.com/agenticdecks/deckrun-mcp"
+  },
+  "authentication": {
+    "required": false,
+    "note": "Free tier: no auth. Paid tier: set DECKRUN_API_KEY=dk_live_... to unlock additional tools."
+  },
+  "endpoints": {
+    "free": "https://deckrun-mcp-free.agenticdecks.com/mcp/",
+    "paid": "https://deckrun-mcp.agenticdecks.com/mcp/"
+  },
+  "tools": [
+    {
+      "name": "get_slide_format",
+      "description": "Fetch the authoritative Deckrun slide format spec — layout tags, syntax rules, and example Markdown.",
+      "tier": "free"
+    },
+    {
+      "name": "generate_slide_deck",
+      "description": "Convert Deckrun Markdown into a public PDF (90-day URL). Returns slide count and warnings.",
+      "tier": "free"
+    },
+    {
+      "name": "generate_video",
+      "description": "Convert Deckrun Markdown into a narrated MP4 video. Async — returns job_id.",
+      "tier": "paid"
+    },
+    {
+      "name": "generate_audio",
+      "description": "Generate MP3 narration from slide notes. Async — returns job_id.",
+      "tier": "paid"
+    },
+    {
+      "name": "check_job",
+      "description": "Poll async job status until complete or failed.",
+      "tier": "paid"
+    },
+    {
+      "name": "get_account",
+      "description": "Fetch plan name, render units used/remaining, and active add-ons.",
+      "tier": "paid"
+    }
+  ],
+  "links": {
+    "openapi": "https://free.agenticdecks.com/.well-known/openapi.yaml",
+    "llms_txt": "https://free.agenticdecks.com/llms.txt",
+    "slide_format_schema": "https://agenticdecks.com/schemas/v1/deckrun-slide-format.json",
+    "pricing": "https://agenticdecks.com/pricing"
+  }
+}
