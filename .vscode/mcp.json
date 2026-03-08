@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "deckrun": {
+      "type": "http",
+      "url": "https://deckrun-mcp-free.agenticdecks.com/mcp/"
+    }
+  }
+}

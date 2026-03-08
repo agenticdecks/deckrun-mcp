@@ -1,0 +1,5 @@
+# Deckrun MCP server — unified requirements (stdio + HTTP transports)
+mcp[cli]>=1.1.0
+uvicorn
+starlette
+requests
