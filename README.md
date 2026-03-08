@@ -147,7 +147,7 @@ call `generate_slide_deck`, and reply with a clickable PDF link.
 | Tier | MCP endpoint |
 |------|-------------|
 | Free | `https://deckrun-mcp-free.agenticdecks.com/mcp/` |
-| Paid | `https://deckrun-mcp.agenticdecks.com/mcp/` |
+| Paid | `https://deckrun-mcp.agenticdecks.com/mcp/` *(coming soon)* |
 
 Discovery: `GET <endpoint>` returns server metadata as JSON.
 
@@ -155,7 +155,6 @@ Discovery: `GET <endpoint>` returns server metadata as JSON.
 
 ## Links
 
-- [Deckrun docs](https://agenticdecks.com/docs)
 - [Slide format reference](https://agenticdecks.com/deckrun)
 - [Pricing](https://agenticdecks.com/pricing)
 - [Agentic Decks](https://agenticdecks.com)
