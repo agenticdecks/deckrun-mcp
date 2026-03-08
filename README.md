@@ -1,6 +1,7 @@
 # Deckrun MCP Server
 
 [![Glama](https://glama.ai/mcp/servers/agenticdecks/deckrun-mcp/badge)](https://glama.ai/mcp/servers/agenticdecks/deckrun-mcp)
+[![awesome-mcp-servers](https://img.shields.io/badge/awesome--mcp--servers-listed-FC60A8)](https://github.com/punkpeye/awesome-mcp-servers)
 
 MCP server for [Deckrun](https://agenticdecks.com) — generate presentation PDFs,
 narrated videos, and audio from Markdown. Built for AI agents and IDEs.
