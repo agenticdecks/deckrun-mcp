@@ -191,6 +191,54 @@ _TOOL_GET_ACCOUNT = types.Tool(
     inputSchema={"type": "object", "properties": {}, "required": []},
 )
 
+_TOOL_VALIDATE_MARKDOWN = types.Tool(
+    name="validate_markdown",
+    description=(
+        "Lint Deckrun Markdown and get a pre-flight RU estimate before generating. "
+        "Returns: valid (bool), issues (lint errors/warnings), estimated_pages, estimated_ru. "
+        "Use this before generate_slide_deck or generate_video to catch errors and check RU cost."
+    ),
+    inputSchema={
+        "type": "object",
+        "properties": {
+            "markdown": {
+                "type": "string",
+                "description": "Deckrun Markdown to validate.",
+            },
+            "document_category": {
+                "type": "string",
+                "description": "Document category: slide (default), resume, whitepaper, datasheet, patent, generic, book.",
+            },
+            "output_types": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Output types to estimate RU for (e.g. ['pdf', 'video', 'audio']). Omit to skip estimate.",
+            },
+        },
+        "required": ["markdown"],
+    },
+)
+
+_TOOL_LIST_THEMES = types.Tool(
+    name="list_themes",
+    description=(
+        "List available slide/document themes for this account. "
+        "Returns system themes and custom themes. "
+        "Use the returned id as slide_theme_id in generate_slide_deck or generate_video."
+    ),
+    inputSchema={"type": "object", "properties": {}, "required": []},
+)
+
+_TOOL_LIST_VOICES = types.Tool(
+    name="list_voices",
+    description=(
+        "List available narration voices for this account. "
+        "Returns voice id, name, tier (system or premium), and language. "
+        "Use the returned id as voice in generate_video or generate_audio."
+    ),
+    inputSchema={"type": "object", "properties": {}, "required": []},
+)
+
 # ---------------------------------------------------------------------------
 # MCP server
 # ---------------------------------------------------------------------------
@@ -202,7 +250,10 @@ app = Server(SERVER_NAME)
 async def list_tools() -> list[types.Tool]:
     tools = [_TOOL_GET_SLIDE_FORMAT, _TOOL_GENERATE_SLIDE_DECK]
     if PAID:
-        tools += [_TOOL_GENERATE_VIDEO, _TOOL_GENERATE_AUDIO, _TOOL_CHECK_JOB, _TOOL_GET_ACCOUNT]
+        tools += [
+            _TOOL_GENERATE_VIDEO, _TOOL_GENERATE_AUDIO, _TOOL_CHECK_JOB, _TOOL_GET_ACCOUNT,
+            _TOOL_VALIDATE_MARKDOWN, _TOOL_LIST_THEMES, _TOOL_LIST_VOICES,
+        ]
     return tools
 
 
@@ -214,13 +265,23 @@ async def call_tool(name: str, arguments: dict) -> list[types.TextContent]:
         return await _generate_slide_deck(arguments.get("markdown", ""))
     if PAID:
         if name == "generate_video":
-            return await _generate_async(arguments.get("markdown", ""), "mp4", arguments.get("voice"))
+            return await _generate_async(arguments.get("markdown", ""), "video", arguments.get("voice"))
         if name == "generate_audio":
-            return await _generate_async(arguments.get("markdown", ""), "mp3", arguments.get("voice"))
+            return await _generate_async(arguments.get("markdown", ""), "audio", arguments.get("voice"))
         if name == "check_job":
             return await _check_job(arguments.get("job_id", ""))
         if name == "get_account":
             return await _get_account()
+        if name == "validate_markdown":
+            return await _validate_markdown(
+                arguments.get("markdown", ""),
+                arguments.get("document_category"),
+                arguments.get("output_types"),
+            )
+        if name == "list_themes":
+            return await _list_themes()
+        if name == "list_voices":
+            return await _list_voices()
     return [types.TextContent(type="text", text=json.dumps({"error": f"Unknown tool: {name}"}))]
 
 
@@ -339,6 +400,56 @@ async def _get_account() -> list[types.TextContent]:
     url = f"{_BASE}/api/profile/me"
     try:
         resp = requests.get(url, headers=_headers(), timeout=15)
+    except requests.RequestException as exc:
+        return [types.TextContent(type="text", text=json.dumps({"error": str(exc)}))]
+    if resp.status_code == 200:
+        return [types.TextContent(type="text", text=resp.text)]
+    return [types.TextContent(type="text", text=json.dumps({
+        "error": f"HTTP {resp.status_code}",
+        "detail": resp.text[:300],
+    }))]
+
+
+async def _validate_markdown(
+    markdown: str,
+    document_category: str | None,
+    output_types: list[str] | None,
+) -> list[types.TextContent]:
+    if not markdown.strip():
+        return [types.TextContent(type="text", text='{"error": "markdown is empty"}')]
+    payload: dict = {"markdown": markdown}
+    if document_category:
+        payload["document_category"] = document_category
+    if output_types:
+        payload["output_types"] = output_types
+    try:
+        resp = requests.post(f"{_BASE}/validate", json=payload, headers=_headers(), timeout=15)
+    except requests.RequestException as exc:
+        return [types.TextContent(type="text", text=json.dumps({"error": str(exc)}))]
+    if resp.status_code in (200, 400):
+        return [types.TextContent(type="text", text=resp.text)]
+    return [types.TextContent(type="text", text=json.dumps({
+        "error": f"HTTP {resp.status_code}",
+        "detail": resp.text[:300],
+    }))]
+
+
+async def _list_themes() -> list[types.TextContent]:
+    try:
+        resp = requests.get(f"{_BASE}/slide-themes", headers=_headers(), timeout=15)
+    except requests.RequestException as exc:
+        return [types.TextContent(type="text", text=json.dumps({"error": str(exc)}))]
+    if resp.status_code == 200:
+        return [types.TextContent(type="text", text=resp.text)]
+    return [types.TextContent(type="text", text=json.dumps({
+        "error": f"HTTP {resp.status_code}",
+        "detail": resp.text[:300],
+    }))]
+
+
+async def _list_voices() -> list[types.TextContent]:
+    try:
+        resp = requests.get(f"{_BASE}/voices", headers=_headers(), timeout=15)
     except requests.RequestException as exc:
         return [types.TextContent(type="text", text=json.dumps({"error": str(exc)}))]
     if resp.status_code == 200:
