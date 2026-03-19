@@ -384,5 +384,10 @@ async def main():
         )
 
 
-if __name__ == "__main__":
+def main_sync():
+    """Synchronous entry point for console_scripts."""
     asyncio.run(main())
+
+
+if __name__ == "__main__":
+    main_sync()

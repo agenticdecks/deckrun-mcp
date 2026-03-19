@@ -557,5 +557,10 @@ starlette_app.add_middleware(
 )
 
 
-if __name__ == "__main__":
+def main_sync():
+    """Synchronous entry point for console_scripts."""
     uvicorn.run(starlette_app, host="127.0.0.1", port=8082, log_level="info")
+
+
+if __name__ == "__main__":
+    main_sync()

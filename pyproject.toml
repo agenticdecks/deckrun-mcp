@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "deckrun-mcp"
+version = "1.0.0"
+description = "MCP server for Deckrun — generate presentation PDFs, narrated videos, and audio from Markdown"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    {name = "Agentic Decks", email = "contact@agenticdecks.com"},
+]
+keywords = ["mcp", "deckrun", "pdf", "slides", "presentations", "ai-agents", "model-context-protocol"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Multimedia :: Graphics :: Presentation",
+]
+dependencies = [
+    "mcp[cli]>=1.1.0",
+    "uvicorn",
+    "starlette",
+    "requests",
+]
+
+[project.urls]
+Homepage = "https://agenticdecks.com"
+Documentation = "https://agenticdecks.com/docs"
+Repository = "https://github.com/agenticdecks/deckrun-mcp"
+Issues = "https://github.com/agenticdecks/deckrun-mcp/issues"
+
+[project.scripts]
+deckrun-mcp = "deckrun_mcp:main_sync"
+deckrun-mcp-http = "deckrun_mcp_http:main_sync"
+
+[tool.setuptools]
+py-modules = ["deckrun_mcp", "deckrun_mcp_http"]
