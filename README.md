@@ -1,13 +1,16 @@
 # Deckrun MCP Server
 
-[![Glama](https://glama.ai/mcp/servers/agenticdecks/deckrun-mcp/badge)](https://glama.ai/mcp/servers/agenticdecks/deckrun-mcp)
+[![PyPI](https://img.shields.io/pypi/v/deckrun-mcp)](https://pypi.org/project/deckrun-mcp/)
 [![awesome-mcp-servers](https://img.shields.io/badge/awesome--mcp--servers-listed-FC60A8)](https://github.com/punkpeye/awesome-mcp-servers)
 
-MCP server for [Deckrun](https://agenticdecks.com) — generate presentation PDFs,
-narrated videos, and audio from Markdown. Built for AI agents and IDEs.
+MCP server for [Deckrun](https://agenticdecks.com) by [Agentic Decks](https://agenticdecks.com) — generate presentation PDFs, narrated videos, and audio from Markdown. Built for AI agents and IDEs.
 
-**Free tier:** no API key required — generate PDFs instantly.
-**Paid tier:** set `DECKRUN_API_KEY` to unlock video, audio, and account tools.
+Deckrun is a document execution engine: your AI writes the content, Deckrun renders it into pixel-perfect branded PDFs, narrated MP4 videos, and MP3 audio — from a single Markdown source. No slide editor, no video tool, no audio studio.
+
+**Free tier:** no API key required — generate PDFs instantly at [free.agenticdecks.com](https://free.agenticdecks.com).
+**Paid tier:** set `DECKRUN_API_KEY` to unlock video, audio, custom themes, and more. [See pricing](https://agenticdecks.com/pricing).
+
+**Install:** `pip install deckrun-mcp`
 
 ---
 
@@ -78,7 +81,7 @@ The HTTP transport is hosted and ready. Add one JSON snippet to your IDE.
 ## Stdio install (Claude Desktop and other stdio-only clients)
 
 ```bash
-pip install mcp requests
+pip install deckrun-mcp
 ```
 
 **Claude Desktop** — `~/Library/Application Support/Claude/claude_desktop_config.json`:
@@ -131,6 +134,9 @@ All free tools plus:
 | `generate_audio` | Slide notes → MP3 narration (async, returns `job_id`) |
 | `check_job` | Poll async job status until `complete` or `failed` |
 | `get_account` | Plan name, render units used/remaining, active add-ons |
+| `validate_markdown` | Lint Deckrun Markdown and get a pre-flight RU estimate |
+| `list_themes` | List available slide/document themes (system + custom) |
+| `list_voices` | List available narration voices — id, name, tier, language |
 
 ---
 
@@ -150,7 +156,7 @@ call `generate_slide_deck`, and reply with a clickable PDF link.
 | Tier | MCP endpoint |
 |------|-------------|
 | Free | `https://deckrun-mcp-free.agenticdecks.com/mcp/` |
-| Paid | `https://deckrun-mcp.agenticdecks.com/mcp/` *(coming soon)* |
+| Paid | `https://deckrun-mcp.agenticdecks.com/mcp/` |
 
 Discovery: `GET <endpoint>` returns server metadata as JSON.
 
@@ -158,6 +164,11 @@ Discovery: `GET <endpoint>` returns server metadata as JSON.
 
 ## Links
 
-- [Slide format reference](https://agenticdecks.com/deckrun)
-- [Pricing](https://agenticdecks.com/pricing)
-- [Agentic Decks](https://agenticdecks.com)
+- [Agentic Decks](https://agenticdecks.com) — product homepage
+- [Free tier](https://free.agenticdecks.com) — generate PDFs instantly, no sign-up
+- [Slide Background Designer](https://free.agenticdecks.com/tools/bg-designer.html) — free tool to design slide backgrounds
+- [Blog: Generate a Free PDF from Claude Code](https://agenticdecks.com/blog/free-pdf-with-deckrun-mcp/) — step-by-step guide
+- [Slide format reference](https://agenticdecks.com/deckrun) — layout tags, syntax rules, examples
+- [Pricing](https://agenticdecks.com/pricing) — plans from $25/month
+- [Documentation](https://agenticdecks.com/docs) — API docs and how-to guides
+- [PyPI](https://pypi.org/project/deckrun-mcp/) — `pip install deckrun-mcp`

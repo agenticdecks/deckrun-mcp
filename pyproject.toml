@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "deckrun-mcp"
-version = "1.0.0"
-description = "MCP server for Deckrun — generate presentation PDFs, narrated videos, and audio from Markdown"
+version = "1.1.0"
+description = "MCP server for Deckrun by Agentic Decks — generate presentation PDFs, narrated videos, and audio from Markdown. Works with Claude Code, Cursor, VS Code, and any MCP-compatible AI assistant. Free tier: no API key needed. Paid tier: video, audio, custom themes, and more."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.10"
@@ -34,6 +34,10 @@ dependencies = [
 [project.urls]
 Homepage = "https://agenticdecks.com"
 Documentation = "https://agenticdecks.com/docs"
+"Free Tier" = "https://free.agenticdecks.com"
+"Slide Background Designer" = "https://free.agenticdecks.com/tools/bg-designer.html"
+Pricing = "https://agenticdecks.com/pricing"
+"Blog: Free PDF from Claude Code" = "https://agenticdecks.com/blog/free-pdf-with-deckrun-mcp/"
 Repository = "https://github.com/agenticdecks/deckrun-mcp"
 Issues = "https://github.com/agenticdecks/deckrun-mcp/issues"
 
