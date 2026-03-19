@@ -362,6 +362,14 @@ async def _generate_slide_deck(markdown: str) -> list[types.TextContent]:
     except requests.RequestException as exc:
         return [types.TextContent(type="text", text=json.dumps({"error": str(exc)}))]
     if resp.status_code == 200:
+        data = resp.json() if resp.headers.get("content-type", "").startswith("application/json") else {}
+        if not PAID and isinstance(data, dict):
+            data["upgrade"] = (
+                "Want video, audio, custom themes, and more? "
+                "Upgrade at https://agenticdecks.com/pricing — "
+                "then set DECKRUN_API_KEY in your MCP config."
+            )
+            return [types.TextContent(type="text", text=json.dumps(data))]
         return [types.TextContent(type="text", text=resp.text)]
     if resp.status_code == 413:
         return [types.TextContent(type="text", text=json.dumps({
@@ -493,7 +501,7 @@ async def lifespan(app: Starlette):
 # Discovery middleware
 # ---------------------------------------------------------------------------
 
-_SERVER_INFO = {
+_SERVER_INFO: dict = {
     "server": SERVER_NAME,
     "version": SERVER_VERSION,
     "tier": "paid" if PAID else "free",
@@ -508,6 +516,17 @@ _SERVER_INFO = {
     "docs": "https://agenticdecks.com/docs",
     "repository": "https://github.com/agenticdecks/deckrun-mcp",
 }
+
+if not PAID:
+    _SERVER_INFO["upgrade"] = {
+        "paid_endpoint": "https://deckrun-mcp.agenticdecks.com/mcp/",
+        "how": "Set DECKRUN_API_KEY=dk_live_... in your MCP client config.",
+        "pricing": "https://agenticdecks.com/pricing",
+        "extra_tools": [
+            "generate_video", "generate_audio", "check_job",
+            "get_account", "validate_markdown", "list_themes", "list_voices",
+        ],
+    }
 
 
 class MCPDiscoveryMiddleware(BaseHTTPMiddleware):
