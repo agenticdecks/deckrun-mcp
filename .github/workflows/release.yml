@@ -1,4 +1,4 @@
-name: Release to PyPI + GitHub
+name: GitHub Release
 
 on:
   push:
@@ -13,11 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          fetch-depth: 0
 
       - name: Extract version from tag
         id: version
@@ -37,43 +34,26 @@ jobs:
           TAG_VERSION="${{ steps.version.outputs.version }}"
           if [ "$TOML_VERSION" != "$TAG_VERSION" ]; then
             echo "ERROR: pyproject.toml version ($TOML_VERSION) does not match tag ($TAG_VERSION)"
-            echo "Update pyproject.toml version to $TAG_VERSION before tagging."
             exit 1
           fi
           echo "Version match: $TOML_VERSION"
 
-      - name: Install build tools
-        run: pip install build twine
-
-      - name: Build package
-        run: python -m build
-
-      - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload dist/*
-
       - name: Generate changelog
-        id: changelog
         run: |
-          # Get commits since previous tag
-          PREV_TAG=$(git tag --sort=-version:refname | head -2 | tail -1)
-          if [ -z "$PREV_TAG" ] || [ "$PREV_TAG" = "${{ steps.version.outputs.tag }}" ]; then
-            CHANGES="Initial release"
+          PREV_TAG=$(git tag --sort=-version:refname | sed -n '2p')
+          if [ -z "$PREV_TAG" ]; then
+            git log --pretty=format:"- %s" --no-merges > /tmp/changelog.txt
           else
-            CHANGES=$(git log "${PREV_TAG}..HEAD" --pretty=format:"- %s" --no-merges)
+            git log "${PREV_TAG}..HEAD" --pretty=format:"- %s" --no-merges > /tmp/changelog.txt
           fi
-          # Write to file (multi-line output)
-          echo "$CHANGES" > /tmp/changelog.txt
-          echo "Generated changelog from ${PREV_TAG:-initial} to ${{ steps.version.outputs.tag }}"
+          echo "" >> /tmp/changelog.txt
+          echo "" >> /tmp/changelog.txt
+          echo "**Install:** \`pip install deckrun-mcp==${{ steps.version.outputs.version }}\`" >> /tmp/changelog.txt
+          echo "**PyPI:** https://pypi.org/project/deckrun-mcp/${{ steps.version.outputs.version }}/" >> /tmp/changelog.txt
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           name: "deckrun-mcp ${{ steps.version.outputs.tag }}"
           body_path: /tmp/changelog.txt
-          files: |
-            dist/*.whl
-            dist/*.tar.gz
           generate_release_notes: false
