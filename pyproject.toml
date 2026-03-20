@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "deckrun-mcp"
-version = "1.1.0"
+version = "1.1.1"
 description = "MCP server for Deckrun by Agentic Decks — generate presentation PDFs, narrated videos, and audio from Markdown. Works with Claude Code, Cursor, VS Code, and any MCP-compatible AI assistant. Free tier: no API key needed. Paid tier: video, audio, custom themes, and more."
 readme = "README.md"
 license = "MIT"
