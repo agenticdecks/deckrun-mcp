@@ -172,3 +172,8 @@ Discovery: `GET <endpoint>` returns server metadata as JSON.
 - [Pricing](https://agenticdecks.com/pricing) — plans from $25/month
 - [Documentation](https://agenticdecks.com/docs) — API docs and how-to guides
 - [PyPI](https://pypi.org/project/deckrun-mcp/) — `pip install deckrun-mcp`
+
+## Hosted deployment
+
+A hosted deployment is available on [Fronteir AI](https://fronteir.ai/mcp/agenticdecks-deckrun-mcp).
+
