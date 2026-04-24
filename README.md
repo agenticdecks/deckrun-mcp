@@ -3,12 +3,11 @@
 [![PyPI](https://img.shields.io/pypi/v/deckrun-mcp)](https://pypi.org/project/deckrun-mcp/)
 [![awesome-mcp-servers](https://img.shields.io/badge/awesome--mcp--servers-listed-FC60A8)](https://github.com/punkpeye/awesome-mcp-servers)
 
+> **Note:** The hosted Deckrun endpoints (`free.agenticdecks.com`, `deckrun-mcp-free.agenticdecks.com`, `api.agenticdecks.com`) are provisioned per engagement — see [Access & Availability](https://agenticdecks.com/status/). The `pip install deckrun-mcp` package and local-execution paths documented below work immediately against your own deployment. For hosted access, open an [Access Request](https://github.com/agenticdecks/deckrun/issues/new?template=access.yml) — we respond within one business day.
+
 MCP server for [Deckrun](https://agenticdecks.com) by [Agentic Decks](https://agenticdecks.com) — generate presentation PDFs, narrated videos, and audio from Markdown. Built for AI agents and IDEs.
 
 Deckrun is a document execution engine: your AI writes the content, Deckrun renders it into pixel-perfect branded PDFs, narrated MP4 videos, and MP3 audio — from a single Markdown source. No slide editor, no video tool, no audio studio.
-
-**Free tier:** no API key required — generate PDFs instantly at [free.agenticdecks.com](https://free.agenticdecks.com).
-**Paid tier:** set `DECKRUN_API_KEY` to unlock video, audio, custom themes, and more. [See pricing](https://agenticdecks.com/pricing).
 
 **Install:** `pip install deckrun-mcp`
 
